@@ -1,7 +1,7 @@
 {
-  "name": "spotify",
+  "name": "soundtracker",
   "version": "1.0.0",
-  "description": "OAuth test using passportjs.",
+  "description": "Rudimentary form of an app for building playlists on Spotify.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
