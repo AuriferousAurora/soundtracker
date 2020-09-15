@@ -3,11 +3,13 @@ const session = require("express-session")
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const consolidate = require('consolidate');
+const fetch = require('node-fetch');
 
 require('dotenv').config();
 
 const port = 3000;
 const authCallbackPath = '/auth/spotify/callback';
+const baseURL = 'https://api.spotify.com/v1/';
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -35,11 +37,18 @@ passport.use(new SpotifyStrategy({
     },
     function (accessToken, refreshToken, expires_in, profile, done) {
         // asynchronous verification, for effect...
-        process.nextTick(function() {
+        process.nextTick(async function() {
         // To keep the example simple, the user's spotify profile is returned to
         // represent the logged-in user. In a typical application, you would want
         // to associate the spotify account with a user record in your database,
         // and return that user instead.
+            const test = await fetch(baseURL + 'me', {
+                method: 'GET',
+                headers: {
+                  'Authorization': 'Bearer ' + accessToken,
+                },
+            });
+            console.log(test);
             done(null, profile);
         });
     })

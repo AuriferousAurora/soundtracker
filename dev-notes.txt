@@ -1,0 +1,20 @@
+This is going to serve as way for me to write about what I am currently doing  when I complete a coding session. 
+In theory, I can return to this file and read about what my current thought process as I wrap up and thus can ensure I don't forget what my current plans are. 
+Also, maybe it will be easier to get back into my workflow without having to redecipher all my code.
+
+I built this app using the starter code located here: https://github.com/jmperez/passport-spotify/tree/master/examples/login
+This is the API reference: https://developer.spotify.com/documentation/web-api/reference/
+I should probably read through these guides at some point: https://developer.spotify.com/documentation/general/guides/
+
+2020.09.15:
+
+This is the end of my first sessin of coding. 
+
+
+I still don't fully understand the login process and I only partially understand the templating engine (nunjucks), but it's similar enough to the only other one I'm familiar with (whatever engine Django for Python uses). 
+
+I may decide to redesing the frontend with React or something else, but for now Node.JS for the backend and basic HTML/CSS/JS and Nunjucks should serve well.
+
+In 'app.js', on line 45, I'm implementing a pretty basic request using node-fetch and logging the response object to the console. My plan is to have reviewed Net Ninja's tutorial on asynchronous JavaScript and maybe play around with some other async code so I can return to this and have a few more clues about how I want to proceed. Right now I'm guessing that I'll want to do some basic error-handling, change the URL to grab my playlists instead of my profile info, grab some info out of whatever I get back, and then shove it in some HTML using the Nunjucks templating system.
+
+Ideally, I'll be able to have a deeper understanding of what I'm doing as I go.
