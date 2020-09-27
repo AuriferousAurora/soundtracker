@@ -5,6 +5,8 @@ const SpotifyStrategy = require('passport-spotify').Strategy;
 const consolidate = require('consolidate');
 const fetch = require('node-fetch');
 
+let access;
+
 require('dotenv').config();
 
 const port = 3000;
@@ -42,13 +44,13 @@ passport.use(new SpotifyStrategy({
         // represent the logged-in user. In a typical application, you would want
         // to associate the spotify account with a user record in your database,
         // and return that user instead.
-            const test = await fetch(baseURL + 'me', {
-                method: 'GET',
-                headers: {
-                  'Authorization': 'Bearer ' + accessToken,
-                },
-            });
-            console.log(test);
+            // const me = await fetch(baseURL + 'me', {
+            //     method: 'GET',
+            //     headers: {
+            //       'Authorization': 'Bearer ' + accessToken,
+            //     },
+            // });
+            access = accessToken;
             done(null, profile);
         });
     })
@@ -70,8 +72,25 @@ app.use(express.static(__dirname + "/public"));
 
 app.engine("html", consolidate.nunjucks);
 
-app.get('/', (req, res) => {
-    res.render("index.html", { user: req.user });
+app.get('/', async (req, res) => {
+    let playlists;
+
+    if(access) {
+        await fetch(baseURL + 'me/playlists', {
+            headers: {
+              'Authorization': 'Bearer ' + access,
+            }, })
+        .catch((err) => console.log(err))
+        .then((res) => res.json())
+        .then((json) => playlists = json.items);
+    }
+    if(access) {
+        playlists.forEach((playlist) => console.log(playlist));
+        res.render("index.html", { user: req.user, playlists: playlists });
+    } else {
+        res.render("index.html");
+    }
+
 });
 
 app.get("/account", ensureAuthenticated, function (req, res) {
