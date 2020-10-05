@@ -3,34 +3,32 @@
 
 <head>
 	<title>Passport-Spotify Example</title>
+	<link href="./style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-	{% if not user %}
-	<p>
-		<a href="/">Home</a> |
-		<a href="/login">Log In</a>
-	</p>
-	{% else %}
-	<p>
-		<a href="/">Home</a> |
-		<a href="/account">Account</a> |
-		<a href="/logout">Log Out</a>
-	</p>
-	{% endif %} {% block content %}{% endblock %}
-	<ul id='test'>Test</ul>
+	<header>
+		{% if not user %}
+		<p>
+			<a href="/">Home</a> |
+			<a href="/login">Log In</a>
+		</p>
+		{% else %}
+		<p>
+			<a href="/">Home</a> |
+			<a href="/account">Account</a> |
+			<a href="/logout">Log Out</a>
+		</p>
+		{% endif %}
+	</header>
+	<nav>
+		<div class="nav__tab">Playlists</div>
+		<div class="nav__tab">Genres</div>
+		<div class="nav__tab">Songs</div>
+		<div class="nav__tab">Miscellaneous</div>
+	</nav>
+	<div class="content">
+		{% block content %}{% endblock %}
+	</div>
 </body>
-<script>
-	const arr = [1, 2, 3, 4, 5];
-	const test = document.getElementById('test');
-
-	for(let i = 0; i < arr.length; i++) {
-		let li = document.createElement('li')
-		li.innerHTML = i;
-		test.appendChild(li);
-	}
-	if(playlists) {
-		let p = playlists;
-	}
-</script>
 </html>

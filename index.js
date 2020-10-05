@@ -35,9 +35,10 @@ passport.deserializeUser(function (obj, done) {
 passport.use(new SpotifyStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: 'http://localhost:' + port + authCallbackPath
+    callbackURL: 'http://localhost:' + port + authCallbackPath,
+    passReqToCallback: true
     },
-    function (accessToken, refreshToken, expires_in, profile, done) {
+    function (req, accessToken, refreshToken, expires_in, profile, done) {
         // asynchronous verification, for effect...
         process.nextTick(async function() {
         // To keep the example simple, the user's spotify profile is returned to
@@ -50,7 +51,8 @@ passport.use(new SpotifyStrategy({
             //       'Authorization': 'Bearer ' + accessToken,
             //     },
             // });
-            access = accessToken;
+            req.session.accessToken = accessToken;
+            // access = accessToken;
             done(null, profile);
         });
     })
@@ -73,9 +75,12 @@ app.use(express.static(__dirname + "/public"));
 app.engine("html", consolidate.nunjucks);
 
 app.get('/', async (req, res) => {
-    let playlists;
+    // Todo: Figure out where to add URL path to nunjucks template context so we can conditionally render CSS links.
+    // * Either that or we redesign the login sections to fit with what we're doing in the playlists page.
+    let access= req.session.accessToken;
+    let playlists = req.session.playlists;
 
-    if(access) {
+    if (access) {
         await fetch(baseURL + 'me/playlists', {
             headers: {
               'Authorization': 'Bearer ' + access,
@@ -83,12 +88,10 @@ app.get('/', async (req, res) => {
         .catch((err) => console.log(err))
         .then((res) => res.json())
         .then((json) => playlists = json.items);
-    }
-    if(access) {
-        playlists.forEach((playlist) => console.log(playlist));
-        res.render("index.html", { user: req.user, playlists: playlists });
+
+        res.render("playlists.html", { user: req.user, playlists: playlists });
     } else {
-        res.render("index.html");
+        res.render("playlists.html");
     }
 
 });
