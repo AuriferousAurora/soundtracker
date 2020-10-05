@@ -8,24 +8,25 @@
 
 <body>
 	<header>
+		<h1 class="title">soundtracker</h1>
 		{% if not user %}
-		<p>
+		<div class="links">
 			<a href="/">Home</a> |
 			<a href="/login">Log In</a>
-		</p>
+		</div>
 		{% else %}
-		<p>
+		<div class="links">
 			<a href="/">Home</a> |
 			<a href="/account">Account</a> |
 			<a href="/logout">Log Out</a>
-		</p>
+		</div>
 		{% endif %}
 	</header>
 	<nav>
-		<div class="nav__tab">Playlists</div>
-		<div class="nav__tab">Genres</div>
-		<div class="nav__tab">Songs</div>
-		<div class="nav__tab">Miscellaneous</div>
+		<div class="nav__tab nav__tab--active">Playlists</div>
+		<div class="nav__tab nav__tab--inactive">Genres</div>
+		<div class="nav__tab nav__tab--inactive" >Songs</div>
+		<div class="nav__tab nav__tab--inactive">Miscellaneous</div>
 	</nav>
 	<div class="content">
 		{% block content %}{% endblock %}

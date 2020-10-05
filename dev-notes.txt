@@ -33,3 +33,9 @@ Still don't know what the done function does.
 
 Currently, I'm assigning the accessToken that is returned during the passport authentication to a global variable and utilizing that in the home route to grab playlists. I still don't know enough about asnychronous JavasScript and the Express framework, so I'll
 likely work on the CSS and finish the Node JWT tutorial before I return to this.
+
+:: 2020.10.05 ::
+
+Learned a lot today. I can add set the passReqToCallback property on the SpotifyStrategy to 'true' and have access to the request object in my callback function. That allows me to store the accessToken in the req.session object and use it elsewhere in the application.
+
+I will likely want to write some code that handle what happens if the accessToken expries while the user is doing something.

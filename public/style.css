@@ -1,11 +1,23 @@
+@font-face {
+  font-family: "Poppins";
+  src: url("fonts/poppins/Poppins-Regular.ttf") format("truetype");
+}
+
+* {
+  box-sizing: border-box;
+}
+
 :root {
   --green: #1DB954;
   --black: #191414;
   --white: #FFFFFF;
   --gray: #222426;
+
   --item-shadow: 0px 0px 6px 1px rgba(0,0,0,0.75);
   --left-shadow: -1px 0px 6px 1px rgba(0,0,0,0.75);
   --right-shadow: 1px 0px 6px 1px rgba(0,0,0,0.75);
+
+  --font-main: "Poppins", sans-serif;
 }
 
 body {
@@ -15,23 +27,111 @@ body {
   margin: 0;
 }
 
+/* ... Header ... */
+
 header {
+  align-items: center;
   background-color: var(--black);
+  display: flex;
   grid-column: 1 / 3;
   grid-row: 1 / 2;
+  justify-content: space-between;
 }
+
+header > h1.title {
+  color: var(--green);
+  font-family: var(--font-main);
+  margin-left: 1em;
+}
+
+header > div.links {
+  font-family: var(--font-main);
+  margin-right: 1em;
+}
+
+header > div.links > a, header > div.links > a:visited {
+  color: var(--white);
+  text-decoration: none;
+}
+
+header > div.links > a:hover {
+  color: var(--green);
+}
+
+/* ... Navigation ... */
 
 nav {
   background-color: var(--gray);
+  box-shadow: var(--right-shadow);
   grid-column: 1 / 2;
   grid-row: 2 / 3;
+  padding: 1em 0;
 }
 
+nav > div.nav__tab {
+  align-items: center;
+  display: flex;
+  font-family: var(--font-main);
+  height: 4em;
+  justify-content: center;
+  margin: 0.5em 0;
+  width: 100%;
+}
+
+nav > div.nav__tab--active {
+  /* Todo: Determine how to extend div past parent div */
+  background-color: var(--green);
+  box-shadow: var(--right-shadow);
+  color: var(--black);
+}
+
+nav > div.nav__tab--inactive {
+  background-color: var(--black);
+  color: var(--white);
+}
+/* ... Content ... */
+
 div.content {
-  background-color: var(-white);
+  background-color: var(--white);
   grid-column: 2 / 3;
   grid-row: 2 / 3;
+  padding: 1em 2em;
 }
+
+.item {
+  background-color: var(--black);
+  border-radius: 0.4em;
+  box-shadow: var(--item-shadow);
+  color: var(--white);
+  margin-bottom: 1em;
+  padding: 1em;
+}
+
+.item.item--playlist {
+  display: flex;
+  height: 5em;
+  justify-content: space-between;
+  width: 100%;
+}
+
+h3.item__title {
+  font-family: var(--font-main);
+  margin: 0;
+}
+
+h5.item__sub-title {
+  margin: 0;
+}
+/* 
+button.item__button {
+  font-family: var(--font-main);
+  height: 50%;
+  width: 3em;
+} */
+
+
+
+
 
 
 
