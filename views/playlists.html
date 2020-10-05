@@ -22,3 +22,17 @@
 
 {% endif %}
 {% endblock %}
+
+{% block scripts %}
+<script>
+	const playlists = Array.from(document.getElementsByClassName('item--playlist'));
+
+	for (let i = 0; i < playlists.length; i++) {
+		let id = playlists[i].children[0].children[1].textContent;
+		let button = playlists[i].children[1].children[0];
+		button.onclick = () => {
+			fetch('/playlist/' + id).then((req, res) => console.log(req.url)).catch((err) => console.log(err));
+		}
+	}	
+</script>
+{% endblock%}

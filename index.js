@@ -1,11 +1,12 @@
 const express = require('express');
-const session = require("express-session")
+const session = require("express-session");
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const consolidate = require('consolidate');
 const fetch = require('node-fetch');
 
-let access;
+const { ensureAuthenticated } = require('./middleware/authMiddleware');
+const playlistRoutes = require('./routes/playlistRoutes');
 
 require('dotenv').config();
 
@@ -45,14 +46,7 @@ passport.use(new SpotifyStrategy({
         // represent the logged-in user. In a typical application, you would want
         // to associate the spotify account with a user record in your database,
         // and return that user instead.
-            // const me = await fetch(baseURL + 'me', {
-            //     method: 'GET',
-            //     headers: {
-            //       'Authorization': 'Bearer ' + accessToken,
-            //     },
-            // });
             req.session.accessToken = accessToken;
-            // access = accessToken;
             done(null, profile);
         });
     })
@@ -134,6 +128,8 @@ app.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/");
   });
+
+app.use(playlistRoutes);
   
 
 app.listen(port, () => {
@@ -145,9 +141,11 @@ app.listen(port, () => {
 //   the request is authenticated (typically via a persistent login session),
 //   the request will proceed. Otherwise, the user will be redirected to the
 //   login page.
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-      return next();
-    }
-    res.redirect("/login");
-  }
+// function ensureAuthenticated(req, res, next) {
+//     if (req.isAuthenticated()) {
+//       return next();
+//     }
+//     res.redirect("/login");
+//   }
+
+// module.exports = { ensureAuthenticated }
