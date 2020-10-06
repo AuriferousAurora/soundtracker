@@ -30,9 +30,7 @@
 	for (let i = 0; i < playlists.length; i++) {
 		let id = playlists[i].children[0].children[1].textContent;
 		let button = playlists[i].children[1].children[0];
-		button.onclick = () => {
-			fetch('/playlist/' + id).then((req, res) => console.log(req.url)).catch((err) => console.log(err));
-		}
+		button.onclick = () => { window.location = 'playlist/' + id }
 	}	
 </script>
 {% endblock%}

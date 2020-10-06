@@ -69,16 +69,12 @@ app.use(express.static(__dirname + "/public"));
 app.engine("html", consolidate.nunjucks);
 
 app.get('/', async (req, res) => {
-    // Todo: Figure out where to add URL path to nunjucks template context so we can conditionally render CSS links.
-    // * Either that or we redesign the login sections to fit with what we're doing in the playlists page.
     let access= req.session.accessToken;
-    let playlists = req.session.playlists;
+    let playlists;
 
     if (access) {
         await fetch(baseURL + 'me/playlists', {
-            headers: {
-              'Authorization': 'Bearer ' + access,
-            }, })
+            headers: { 'Authorization': 'Bearer ' + access } })
         .catch((err) => console.log(err))
         .then((res) => res.json())
         .then((json) => playlists = json.items);
@@ -111,6 +107,7 @@ app.get(
     })
 );
 
+// Todo: Rewrite home route to reroute to login if not logged in and create separate 'playlists' route.
 // GET /auth/spotify/callback
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request. If authentication fails, the user will be redirected back to the

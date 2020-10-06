@@ -31,6 +31,16 @@
 	<div class="content">
 		{% block content %}{% endblock %}
 	</div>
+	<script>
+		const tabs = Array.from(document.getElementsByClassName('nav__tab'));
+		const values = ['playlists', 'genres', 'songs', 'miscellaneous'];
+
+		for (let i = 0; i < tabs.length; i ++) {
+			tabs[i].onclick = () => { window.location = values[i] }
+		}
+		
+		console.log(window.location);
+	</script>
 	{% block scripts %}{% endblock %}
 </body>
 </html>

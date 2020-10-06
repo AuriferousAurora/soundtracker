@@ -65,6 +65,7 @@ nav {
   box-shadow: var(--right-shadow);
   grid-column: 1 / 2;
   grid-row: 2 / 3;
+  min-height: 100vh;
   padding: 1em 0;
 }
 

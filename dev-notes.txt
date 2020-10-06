@@ -43,3 +43,9 @@ I will likely want to write some code that handle what happens if the accessToke
 ... 
 
 I have a successful fetch request applied to each button in my HTML collection of playlist items. Clicking the view button send a successful get request to the proper route but nothing else is happening. I suspect my ignorance of Express is the culprit.
+
+...
+
+Turns out, fetch in client-side JS returns a response to the script. To navigate to a new URL path, I can just use window.location and set a new path. I don't know if this is best practice, but it's working for now.
+
+I also can likely remove the conditional rendering the Nunjucks tempalte to check for a user on each template when I rewrite the app routing to have a separate home/login route and playlists route. Kind of a waste since I'm already authenticating server-side.
