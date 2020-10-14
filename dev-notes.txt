@@ -49,3 +49,7 @@ I have a successful fetch request applied to each button in my HTML collection o
 Turns out, fetch in client-side JS returns a response to the script. To navigate to a new URL path, I can just use window.location and set a new path. I don't know if this is best practice, but it's working for now.
 
 I also can likely remove the conditional rendering the Nunjucks tempalte to check for a user on each template when I rewrite the app routing to have a separate home/login route and playlists route. Kind of a waste since I'm already authenticating server-side.
+
+:: 2020.10.13 ::
+
+Current issue is that my layout template includes a link tag referencing the CSS stylesheet properly in the main pages, but when I change the URL the link no longer works. I either need to figure out how to solve this in Nunjucks or some other way.
