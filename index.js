@@ -102,7 +102,4 @@ app.get(
     }
 );
 
-
-
-
 app.listen(port, () => { return 'Application is listening on port ' + port; });
