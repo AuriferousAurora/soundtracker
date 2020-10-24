@@ -13,7 +13,7 @@
 			<h5 class="item__subtitle">{{ track.artist_name}} | {{ track.album_name }}</h5>
 		</div>
 		<div class="item__buttons">
-			{% set url = "/playlist/" ~ playlist.id %}
+			{% set url = "/track/" ~ track.id  %}
 			<a class="item__button" href={{ url }}>View</a>
 		</div>
 	</div>

@@ -13,6 +13,7 @@ require('dotenv').config();
 const genreRoutes = require('./routes/genreRoutes');
 const mainRoutes = require('./routes/mainRoutes');
 const playlistRoutes = require('./routes/playlistRoutes');
+const trackRoutes = require('./routes/trackRoutes');
 
 const port = globals.port || 3000;
 const authCallbackPath = globals.authCallbackPath;
@@ -74,6 +75,7 @@ app.engine("html", consolidate.nunjucks);
 app.use(genreRoutes);
 app.use(mainRoutes);
 app.use(playlistRoutes);
+app.use(trackRoutes);
 
 // GET /auth/spotify
 //   Use passport.authenticate() as route middleware to authenticate the
