@@ -3,12 +3,12 @@
   src: url("fonts/poppins/Poppins-Regular.ttf") format("truetype");
 }
 
+/* ... Base Styles and Variables ... */
+
 * {
   box-sizing: border-box;
   border: none;
 }
-
-
 
 :root {
   --green: #1DB954;
@@ -144,6 +144,10 @@ h5.item__sub-title {
   min-height: 4em;
   text-align: center;
 }
+
+/* ... Item Containers ... */
+
+
 
 
 
