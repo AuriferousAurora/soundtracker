@@ -8,6 +8,8 @@
   border: none;
 }
 
+
+
 :root {
   --green: #1DB954;
   --black: #191414;
@@ -27,6 +29,10 @@ body {
   grid-template-rows: 4em min-content;
   grid-template-columns: 1fr 4fr;
   margin: 0;
+}
+
+a {
+  text-decoration: none;
 }
 
 /* ... Header ... */
@@ -132,8 +138,11 @@ h5.item__sub-title {
 }
 
 .item__button {
+  background-color: var(--white);
+  line-height: 4;
   min-width: 6em;
   min-height: 4em;
+  text-align: center;
 }
 
 

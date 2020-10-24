@@ -36,7 +36,7 @@ router.get('/playlist/:id', ensureAuthenticated, async (req, res) => {
     .then((json) => playlist = json)
     .catch((err) => console.log(err));
 
-  if (playlist) {
+  if (playlist.tracks) {
     let tracks = [];
     playlist.tracks.items.forEach((track) => {
       let t = track.track;
@@ -50,7 +50,7 @@ router.get('/playlist/:id', ensureAuthenticated, async (req, res) => {
         });
     });
 
-    res.render('playlist', { name: playlist.name, tracks: tracks });
+    res.render('playlist', { user: req.user, name: playlist.name, tracks: tracks });
   } else {
     res.redirect('/playlists');
   }

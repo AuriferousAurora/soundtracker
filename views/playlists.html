@@ -15,22 +15,11 @@
 			<h5 class="item__sub-title">{{ playlist.id }}</h5>
 		</div>
 		<div class="item__buttons">
-			<button class="item__button">View</button>
+			{% set url = "/playlist/" ~ playlist.id %}
+			<a class="item__button" href={{ url }} >View</a>
 		</div>
 	</div>
 	{%- endfor %}
 
 {% endif %}
-{% endblock %}
-
-{% block scripts %}
-<script>
-	const playlists = Array.from(document.getElementsByClassName('item--playlist'));
-
-	for (let i = 0; i < playlists.length; i++) {
-		let id = playlists[i].children[0].children[1].textContent;
-		let button = playlists[i].children[1].children[0];
-		button.onclick = () => { window.location = 'playlist/' + id }
-	}	
-</script>
 {% endblock %}
