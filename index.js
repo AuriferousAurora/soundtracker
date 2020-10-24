@@ -2,7 +2,6 @@ const express = require('express');
 const session = require("express-session");
 const passport = require('passport');
 const consolidate = require('consolidate');
-const fetch = require('node-fetch');
 
 const SpotifyStrategy = require('passport-spotify').Strategy;
 
@@ -16,7 +15,6 @@ const playlistRoutes = require('./routes/playlistRoutes');
 
 const port = globals.port || 3000;
 const authCallbackPath = globals.authCallbackPath;
-const baseURL = globals.baseURL || 'https://api.spotify.com/v1/';
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to

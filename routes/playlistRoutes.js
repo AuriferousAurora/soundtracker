@@ -33,20 +33,24 @@ router.get('/playlist/:id', ensureAuthenticated, async (req, res) => {
   await fetch(baseURL + 'playlists/' + req.params.id, {
     headers: { 'Authorization': 'Bearer ' + access }, })
     .then((res) => res.json())
-    .then((json) => playlist = json.tracks)
+    .then((json) => playlist = json)
     .catch((err) => console.log(err));
 
   if (playlist) {
     let tracks = [];
-    playlist.items.forEach((track) => {
-      console.log(track);
+    playlist.tracks.items.forEach((track) => {
       let t = track.track;
       tracks.push({
-        'id': t.album.id,
-        'name': t.album.name });
+        'id': t.id,
+        'name': t.name,
+        'album_id': t.album.id,
+        'album_name': t.album.name ,
+        'artist_id': t.artists[0].id,
+        'artist_name': t.artists[0].name
+        });
     });
 
-    res.render('playlist', { tracks: tracks });
+    res.render('playlist', { name: playlist.name, tracks: tracks });
   } else {
     res.redirect('/playlists');
   }

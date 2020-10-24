@@ -5,6 +5,7 @@
 
 * {
   box-sizing: border-box;
+  border: none;
 }
 
 :root {
@@ -13,9 +14,10 @@
   --white: #FFFFFF;
   --gray: #222426;
 
-  --item-shadow: 0px 0px 6px 1px rgba(0,0,0,0.75);
+  --item-shadow: 0px 0px 3px 1px rgba(0,0,0,0.75);
   --left-shadow: -1px 0px 6px 1px rgba(0,0,0,0.75);
   --right-shadow: 1px 0px 6px 1px rgba(0,0,0,0.75);
+  --inner-shadow: inset 0px 0px 3px 1px rgba(0,0,0,0.75);
 
   --font-main: "Poppins", sans-serif;
 }
@@ -62,7 +64,7 @@ header > div.links > a:hover {
 
 nav {
   background-color: var(--gray);
-  box-shadow: var(--right-shadow);
+  /* box-shadow: var(--right-shadow); */
   grid-column: 1 / 2;
   grid-row: 2 / 3;
   min-height: 100vh;
@@ -94,6 +96,7 @@ nav > div.nav__tab--inactive {
 
 div.content {
   background-color: var(--white);
+  box-shadow: var(--inner-shadow);
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   padding: 1em 2em;
@@ -108,9 +111,8 @@ div.content {
   padding: 1em;
 }
 
-.item.item--playlist {
+.item.item--playlist, .item--track {
   display: flex;
-  height: 5em;
   justify-content: space-between;
   width: 100%;
 }
@@ -123,13 +125,16 @@ h3.item__title {
 h5.item__sub-title {
   margin: 0;
 }
-/* 
-button.item__button {
-  font-family: var(--font-main);
-  height: 50%;
-  width: 3em;
-} */
 
+.item__buttons {
+  display: flex;
+  align-items: center;
+}
+
+.item__button {
+  min-width: 6em;
+  min-height: 4em;
+}
 
 
 
