@@ -25,25 +25,28 @@
 		</div>
 		{% endif %}
 	</header>
+	
 	<nav>
 		<div class="nav__tab nav__tab--active">Playlists</div>
 		<div class="nav__tab nav__tab--inactive">Genres</div>
 		<div class="nav__tab nav__tab--inactive" >Songs</div>
 		<div class="nav__tab nav__tab--inactive">Miscellaneous</div>
 	</nav>
+
 	<div class="content">
 		{% block content %}{% endblock %}
 	</div>
+
 	<script>
 		const tabs = Array.from(document.getElementsByClassName('nav__tab'));
 		const values = ['playlists', 'genres', 'songs', 'miscellaneous'];
 
 		for (let i = 0; i < tabs.length; i ++) {
-			tabs[i].onclick = () => { window.location = values[i] }
+			tabs[i].onclick = () => { window.location = values[i]; }
 		}
-		
-		console.log(window.location);
 	</script>
-	{% block scripts %}{% endblock %}
+
+	{% block scripts %}
+	{% endblock %}
 </body>
 </html>

@@ -5,18 +5,14 @@
 	<h2>Welcome! Please log in.</h2>
 	<p><a href="/login">login</a></p>
 {% else %}
-	<!-- <h2>Hello, {{ user.username }}.</h2>
-	<p>Your email is {{ user.emails[0].value }}</p> -->
-
 	{% for playlist in playlists -%}
 	<div class="item item--playlist">
 		<div class="item__info">
 			<h3 class="item__title">{{ playlist.name }}</h3>
-			<h5 class="item__sub-title">{{ playlist.id }}</h5>
 		</div>
 		<div class="item__buttons">
 			{% set url = "/playlist/" ~ playlist.id %}
-			<a class="item__button" href={{ url }} >View</a>
+			<a class="item__button" href={{ url }}>View</a>
 		</div>
 	</div>
 	{%- endfor %}

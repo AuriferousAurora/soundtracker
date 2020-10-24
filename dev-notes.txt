@@ -53,3 +53,7 @@ I also can likely remove the conditional rendering the Nunjucks tempalte to chec
 :: 2020.10.13 ::
 
 Current issue is that my layout template includes a link tag referencing the CSS stylesheet properly in the main pages, but when I change the URL the link no longer works. I either need to figure out how to solve this in Nunjucks or some other way.
+
+:: 2020.10.24 ::
+
+I was in the middle of creating a track detail view. I'll need to replicate something along the lines of what I did in the playlist detail route, sending the data to the context and creating links to said view in the playlist detail page the same way I did in the playlists view.
