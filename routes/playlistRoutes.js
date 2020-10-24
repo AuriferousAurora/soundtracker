@@ -6,8 +6,27 @@ const { globals } = require('../globals');
 const router = Router();
 const baseURL = globals.baseURL;
 
+router.get('/playlists', ensureAuthenticated, async (req, res) => {
+  let access= req.session.accessToken;
+  let playlists;
+
+  if (access) {
+      await fetch(baseURL + 'me/playlists', {
+          headers: { 'Authorization': 'Bearer ' + access } })
+      .catch((err) => console.log(err))
+      .then((res) => res.json())
+      .then((json) => playlists = json.items);
+
+      res.render("playlists", { user: req.user, playlists: playlists });
+  } else {
+      res.render("playlists");
+  }
+
+});
+
 router.get('/playlist/:id', ensureAuthenticated, async (req, res) => {
   // Todo: Include logic to handle failed access token due to expiriation.
+  // * Read this: https://developer.spotify.com/documentation/general/guides/authorization-guide/
   let access = req.session.accessToken;
   let playlist;
 

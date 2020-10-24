@@ -1,18 +1,22 @@
 const express = require('express');
 const session = require("express-session");
 const passport = require('passport');
-const SpotifyStrategy = require('passport-spotify').Strategy;
 const consolidate = require('consolidate');
 const fetch = require('node-fetch');
 
+const SpotifyStrategy = require('passport-spotify').Strategy;
+
+const { globals } = require('./globals');
 const { ensureAuthenticated } = require('./middleware/authMiddleware');
-const playlistRoutes = require('./routes/playlistRoutes');
 
 require('dotenv').config();
 
-const port = 3000;
-const authCallbackPath = '/auth/spotify/callback';
-const baseURL = 'https://api.spotify.com/v1/';
+const mainRoutes = require('./routes/mainRoutes');
+const playlistRoutes = require('./routes/playlistRoutes');
+
+const port = globals.port || 3000;
+const authCallbackPath = globals.authCallbackPath;
+const baseURL = globals.baseURL || 'https://api.spotify.com/v1/';
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -68,23 +72,9 @@ app.use(express.static(__dirname + "/public"));
 
 app.engine("html", consolidate.nunjucks);
 
-app.get('/', async (req, res) => {
-    let access= req.session.accessToken;
-    let playlists;
+app.use(mainRoutes);
+app.use(playlistRoutes);
 
-    if (access) {
-        await fetch(baseURL + 'me/playlists', {
-            headers: { 'Authorization': 'Bearer ' + access } })
-        .catch((err) => console.log(err))
-        .then((res) => res.json())
-        .then((json) => playlists = json.items);
-
-        res.render("playlists.html", { user: req.user, playlists: playlists });
-    } else {
-        res.render("playlists.html");
-    }
-
-});
 
 app.get("/account", ensureAuthenticated, function (req, res) {
     res.render("account.html", { user: req.user });
@@ -117,32 +107,11 @@ app.get(
     authCallbackPath,
     passport.authenticate("spotify", { failureRedirect: "/login" }),
     function (req, res) {
-        res.redirect("/");
+        res.redirect("/home");
     }
 );
 
-app.get("/logout", function (req, res) {
-    req.logout();
-    res.redirect("/");
-  });
 
-app.use(playlistRoutes);
-  
 
-app.listen(port, () => {
-    return 'Application is listening on port ' + port;
-});
 
-// Simple route middleware to ensure user is authenticated.
-//   Use this route middleware on any resource that needs to be protected.  If
-//   the request is authenticated (typically via a persistent login session),
-//   the request will proceed. Otherwise, the user will be redirected to the
-//   login page.
-// function ensureAuthenticated(req, res, next) {
-//     if (req.isAuthenticated()) {
-//       return next();
-//     }
-//     res.redirect("/login");
-//   }
-
-// module.exports = { ensureAuthenticated }
+app.listen(port, () => { return 'Application is listening on port ' + port; });
