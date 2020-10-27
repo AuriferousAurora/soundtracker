@@ -57,3 +57,9 @@ Current issue is that my layout template includes a link tag referencing the CSS
 :: 2020.10.24 ::
 
 I was in the middle of creating a track detail view. I'll need to replicate something along the lines of what I did in the playlist detail route, sending the data to the context and creating links to said view in the playlist detail page the same way I did in the playlists view.
+
+:: 2020.10.26 ::
+
+Today I included conneciton code for a PostgreSQL database and wrote a working INSERT query for a playlist table. I'm getting an 'malformed array literal' error during the insertion that I have yet to debug but it looks like the majority or all of the being inserted into the database.
+
+I realize toward the end of this programming session that I'm basically writing custom model code and it might be easier to either break out that code (from the playlistsRoutes file) into a separate models folder and use classes. I could stick the array formatting function as a method on that classs-- something to think about. It may not be worth it.
