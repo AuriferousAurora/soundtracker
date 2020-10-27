@@ -1,5 +1,6 @@
 module.exports.globals = {
-  'port': 3000,
   'authCallbackPath': '/auth/spotify/callback',
-  'baseURL': 'https://api.spotify.com/v1/'
+  'baseURL': 'https://api.spotify.com/v1/',
+  'dbUpdate': true,
+  'port': 3000
 }

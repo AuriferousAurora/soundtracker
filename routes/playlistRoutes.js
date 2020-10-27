@@ -5,21 +5,73 @@ const { globals } = require('../globals');
 
 const router = Router();
 const baseURL = globals.baseURL;
+const dbUpdate = globals.dbUpdate;
+
+const db = require('../db');
 
 router.get('/playlists', ensureAuthenticated, async (req, res) => {
   let access= req.session.accessToken;
   let playlists;
 
   if (access) {
-      await fetch(baseURL + 'me/playlists', {
-          headers: { 'Authorization': 'Bearer ' + access } })
+    await fetch(baseURL + 'me/playlists', {
+        headers: { 'Authorization': 'Bearer ' + access } })
       .catch((err) => console.log(err))
       .then((res) => res.json())
       .then((json) => playlists = json.items);
+      
+     async function dbGeneratePlaylist() {
+      let playlistObjects = [];
+      // For await ... of creates a loop iterating over async iterable objects
+      for await (let p of playlists) {
+        // Instantiate playlist object
+        let playlist = { 'id': null, 'name': null, 'trackIDs': null };
 
-      res.render("playlists", { user: req.user, playlists: playlists });
+        // Returns tracks associated with playlist
+        const tracks = await fetch(p.tracks.href, {
+          headers: { 'Authorization': 'Bearer ' + access } })
+        .catch((err) => console.log(err))
+        .then((res) => res.json());
+        
+        // Get IDs from tracks
+        let ids = [];
+        tracks.items.forEach((track) => {
+          let t = track.track;
+          if (t) ids.push(t.id);
+        });
+        
+        // Update playlist object
+        playlist.id = p.id;
+        playlist.name = p.name;
+        playlist.trackIDs = ids;
+
+        // Add playlist to playlistObjects array
+        playlistObjects.push(playlist);
+      }
+
+      return playlistObjects;
+    };
+
+    const dbFormatArray = (array) => {
+      return "{" + array + "}";
+    }
+  
+    if (dbUpdate) { 
+      try {
+        const playlists = await dbGeneratePlaylist();
+
+        for await (let p of playlists) {
+          const query = await db.query('INSERT INTO playlists (id, name, tracks) VALUES ($1, $2, $3) ON CONFLICT (id) DO NOTHING;', 
+            [p.id, p.name, dbFormatArray(p.trackIDs)]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    res.render("playlists", { user: req.user, playlists: playlists });
   } else {
-      res.render("playlists");
+    res.render("playlists");
   }
 
 });
