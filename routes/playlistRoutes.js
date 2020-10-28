@@ -1,7 +1,9 @@
 const fetch = require('node-fetch');
+
 const { Router } = require('express');
 const { ensureAuthenticated } = require('../middleware/authMiddleware');
 const { globals } = require('../globals');
+const { Model } = require('../models/index');
 
 const router = Router();
 const baseURL = globals.baseURL;
@@ -12,6 +14,13 @@ const db = require('../db');
 router.get('/playlists', ensureAuthenticated, async (req, res) => {
   let access= req.session.accessToken;
   let playlists;
+
+  const m = new Model('playlists', ['a', 'b', 'c']);
+  // m.all().then((res) => console.log(res));
+  console.log(m.value_format());
+
+  // const p = new Playlist('playlists', ['id', 'name', 'tracks']) ;
+  // console.log(p.test())
 
   if (access) {
     await fetch(baseURL + 'me/playlists', {
@@ -51,6 +60,8 @@ router.get('/playlists', ensureAuthenticated, async (req, res) => {
 
       return playlistObjects;
     };
+
+
 
     const dbFormatArray = (array) => {
       return "{" + array + "}";

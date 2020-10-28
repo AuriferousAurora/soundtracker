@@ -17,6 +17,7 @@
     "nunjucks": "^3.2.2",
     "passport": "^0.4.1",
     "passport-spotify": "^1.1.0",
-    "pg": "^8.4.2"
+    "pg": "^8.4.2",
+    "pg-format": "^1.0.4"
   }
 }
