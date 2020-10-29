@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const { Router } = require('express');
 const { ensureAuthenticated } = require('../middleware/authMiddleware');
 const { globals } = require('../globals');
-const { playlist } = require('../models/index');
+const { Playlist } = require('../models');
 
 const router = Router();
 const baseURL = globals.baseURL;
@@ -15,8 +15,6 @@ router.get('/playlists', ensureAuthenticated, async (req, res) => {
   let access= req.session.accessToken;
   let playlists;
 
-  console.log(playlist.all());
-
   if (access) {
     await fetch(baseURL + 'me/playlists', {
         headers: { 'Authorization': 'Bearer ' + access } })
@@ -24,7 +22,7 @@ router.get('/playlists', ensureAuthenticated, async (req, res) => {
       .then((res) => res.json())
       .then((json) => playlists = json.items);
       
-     async function dbGeneratePlaylist() {
+     async function getPlaylistTracks() {
       let playlistObjects = [];
       // For await ... of creates a loop iterating over async iterable objects
       for await (let p of playlists) {
@@ -55,21 +53,11 @@ router.get('/playlists', ensureAuthenticated, async (req, res) => {
 
       return playlistObjects;
     };
-
-
-
-    const dbFormatArray = (array) => {
-      return "{" + array + "}";
-    }
   
     if (dbUpdate) { 
       try {
-        const playlists = await dbGeneratePlaylist();
-
-        for await (let p of playlists) {
-          const query = await db.query('INSERT INTO playlists (id, name, tracks) VALUES ($1, $2, $3) ON CONFLICT (id) DO NOTHING;', 
-            [p.id, p.name, dbFormatArray(p.trackIDs)]);
-        }
+        const playlists = await getPlaylistTracks();
+        Playlist.insert(playlists);
       } catch (error) {
         console.log(error);
       }
