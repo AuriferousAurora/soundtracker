@@ -51,7 +51,7 @@ class Model extends Abstract {
   }
 }
 
-class Playlists extends Model { 
+class Playlist extends Model { 
   constructor(table_name, table_cols, logging_enabled) {
     super(table_name, table_cols, logging_enabled);
   }
@@ -85,10 +85,11 @@ class Playlists extends Model {
 //   } 
 // }
 
-// class Track extends Model {
-//   constructor(table_name, table_cols) {
-//     super(table_name, table_cols);
-//   } 
-// }
+class Track extends Model {
+  constructor(table_name, table_cols) {
+    super(table_name, table_cols);
+  } 
+}
 
-module.exports.Playlist = new Playlists('playlists', ['id', 'name', 'tracks']);
+module.exports.Playlist = new Playlist('playlists', ['id', 'name', 'tracks']);
+module.exports.Track = new Track('tracks', ['id', 'name', 'album', 'artist']);

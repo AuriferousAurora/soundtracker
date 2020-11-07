@@ -63,3 +63,11 @@ I was in the middle of creating a track detail view. I'll need to replicate some
 Today I included conneciton code for a PostgreSQL database and wrote a working INSERT query for a playlist table. I'm getting an 'malformed array literal' error during the insertion that I have yet to debug but it looks like the majority or all of the being inserted into the database.
 
 I realize toward the end of this programming session that I'm basically writing custom model code and it might be easier to either break out that code (from the playlistsRoutes file) into a separate models folder and use classes. I could stick the array formatting function as a method on that classs-- something to think about. It may not be worth it.
+
+:: 2020.10.29 ::
+
+I'm up super late because I was trying to figure out why the JavaScipt I wrote in the layout.html file is not updating the UI correctly. The DomTokenList.replace function seems to be correctly updating the HTML node, but it isn't painting the CSS correctly.
+
+:: 2020.11.06 ::
+
+I figured out the problem I was having last time. I was declaring a variable at the top of my script that was being reinstantiated every time the page changed location, so my code would execute and then only display for a fraction of a second before being rewritten. The solution was to save the variable in sessionStorage.

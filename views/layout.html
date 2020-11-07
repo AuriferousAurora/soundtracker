@@ -27,9 +27,9 @@
 	</header>
 	
 	<nav>
-		<div class="nav__tab nav__tab--active">Playlists</div>
+		<div class="nav__tab nav__tab--inactive">Playlists</div>
 		<div class="nav__tab nav__tab--inactive">Genres</div>
-		<div class="nav__tab nav__tab--inactive" >Songs</div>
+		<div class="nav__tab nav__tab--inactive" >Tracks</div>
 		<div class="nav__tab nav__tab--inactive">Miscellaneous</div>
 	</nav>
 
@@ -39,11 +39,35 @@
 
 	<script>
 		const tabs = Array.from(document.getElementsByClassName('nav__tab'));
-		const values = ['playlists', 'genres', 'songs', 'miscellaneous'];
+		const tabRoutes = ['playlists', 'genres', 'tracks', 'miscellaneous'];
 
-		for (let i = 0; i < tabs.length; i ++) {
-			tabs[i].onclick = () => { window.location = values[i]; }
+		if (window.sessionStorage.tabStates === undefined) {
+			window.sessionStorage.setItem('tabStates', JSON.stringify(tabs.map((i) => 0)));
 		}
+
+		let tabStates = JSON.parse(window.sessionStorage.tabStates);
+	
+		for (let i = 0; i < tabs.length; i ++) {
+			tabs[i].onclick = () => { 
+				tabStates = tabs.map((i) => 0);
+				tabStates[i] = 1;
+
+				window.sessionStorage.setItem('tabStates', JSON.stringify(tabStates));
+				window.location = tabRoutes[i]; 
+			}
+		}
+
+		function changeActiveTab() {
+			for (let i = 0; i < tabs.length; i++) {
+				tabs[i].classList.replace('nav__tab--active', 'nav__tab--inactive');
+				if (tabStates[i]) {
+					tabs[i].classList.replace('nav__tab--inactive', 'nav__tab--active');
+				}
+			}
+			window.sessionStorage.setItem('tabStates', JSON.stringify(tabs.map((i) => 0)));
+		}
+
+		window.onreload = changeActiveTab();
 	</script>
 
 	{% block scripts %}
