@@ -8,16 +8,40 @@ const baseURL = globals.baseURL;
 
 router.get('/tracks', ensureAuthenticated, async (req, res) => {
     let access = req.session.accessToken;
-    let tracks;
-  
+
+    let limit = 50;
+    let next = '';
+    let total = 0;
+
+    let tracks = [];
+
     if (access) {
-      await fetch(baseURL + 'me/tracks', {
+      await fetch(baseURL + 'me/tracks?limit=' + limit, {
           headers: { 'Authorization': 'Bearer ' + access } })
         .catch((err) => console.log(err))
         .then((res) => res.json())
-        .then((json) => tracks = json.items);
+        .then((json) =>  {
+          total = json.total;
+          next = json.next;
+
+          json.items.forEach(item => tracks.push(item));
+      });
+
+      while (tracks.length < total) {
+        await fetch(next, {
+            headers: { 'Authorization': 'Bearer ' + access } })
+          .catch((err) => console.log(err))
+          .then((res) => res.json())
+          .then((json) =>  {
+            next = json.next;
+            json.items.forEach(item => tracks.push(item));
+        });
       }
-    console.log(tracks);
+    }
+
+    console.log(typeof(tracks));
+    console.log(typeof(tracks[0]));
+    console.log(tracks[0]);
 
     res.render("tracks", { user: req.user, tracks: tracks }); 
 });
