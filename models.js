@@ -73,11 +73,11 @@ class Playlist extends Model {
 
 }
 
-// class Artist extends Model {
-//   constructor(table_name, table_cols) {
-//     super(table_name, table_cols);
-//   } 
-// }
+class Artist extends Model {
+  constructor(table_name, table_cols) {
+    super(table_name, table_cols);
+  } 
+}
 
 // class Album extends Model {
 //   constructor(table_name, table_cols) {
@@ -89,7 +89,18 @@ class Track extends Model {
   constructor(table_name, table_cols) {
     super(table_name, table_cols);
   } 
+
+  async insert(data) {
+    for await (let d of data) {
+      const values = [d['id'], d['name'], d['artist_id'], d['artist_name'], d['album_id'], d['album_name']];
+      const sql = format('INSERT INTO %I (%I) VALUES (%L);', this.table_name, this.table_cols, values);
+      const query = await db.query(sql);
+
+      if(this.logging_enabled) query.then((res) => console.log(res)).catch((err) => console.log(err));
+    }
+  }
 }
 
 module.exports.Playlist = new Playlist('playlists', ['id', 'name', 'tracks']);
-module.exports.Track = new Track('tracks', ['id', 'name', 'album', 'artist']);
+module.exports.Track = new Track('tracks', ['id', 'name', 'artist_id', 'artist_name', 'album_id','album_name']);
+module.exports.Artist = new Artist('artists', ['id', 'name']);

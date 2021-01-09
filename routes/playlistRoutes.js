@@ -53,12 +53,12 @@ router.get('/playlists', ensureAuthenticated, async (req, res) => {
 
       return playlistObjects;
     };
-  
+
     if (dbUpdate) { 
       try {
         const playlists = await getPlaylistTracks();
         Playlist.insert(playlists);
-      } catch (error) {
+      } catch ( error ) {
         console.log(error);
       }
     }
