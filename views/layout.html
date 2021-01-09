@@ -29,7 +29,8 @@
 	<nav>
 		<div class="nav__tab nav__tab--inactive">Playlists</div>
 		<div class="nav__tab nav__tab--inactive">Genres</div>
-		<div class="nav__tab nav__tab--inactive" >Tracks</div>
+		<div class="nav__tab nav__tab--inactive">Tracks</div>
+		<div class="nav__tab nav__tab--inactive">Artists</div>
 		<div class="nav__tab nav__tab--inactive">Miscellaneous</div>
 	</nav>
 
@@ -39,7 +40,7 @@
 
 	<script>
 		const tabs = Array.from(document.getElementsByClassName('nav__tab'));
-		const tabRoutes = ['playlists', 'genres', 'tracks', 'miscellaneous'];
+		const tabRoutes = ['playlists', 'genres', 'tracks', 'artists', 'miscellaneous'];
 
 		if (window.sessionStorage.tabStates === undefined) {
 			window.sessionStorage.setItem('tabStates', JSON.stringify(tabs.map((i) => 0)));

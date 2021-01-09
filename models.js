@@ -43,11 +43,21 @@ class Model extends Abstract {
   }
 
   async select(data) {
-    // May want to rewrite this to include the abilityo select on columns other than id.
+    // May want to rewrite this to include the abilit to select on columns other than id.
     const sql = format('SELECT * FROM %I WHERE id IN (%L);', this.table_name, data);
     const query = await db.query(sql);
 
     return query;
+  }
+
+  async select_single_col(column) {
+    const sql = format('SELECT DISTINCT %I FROM %I;', column, this.table_name);
+    const query = await db.query(sql);
+
+    let rows = [];
+    query.rows.forEach(r => rows.push(r.artist_id));
+
+    return rows;
   }
 }
 
@@ -77,6 +87,16 @@ class Artist extends Model {
   constructor(table_name, table_cols) {
     super(table_name, table_cols);
   } 
+
+  async insert(data) {
+    for await (let d of data) {
+      const values = [d['id'], d['name'], "{" + d.genres + "}"];
+      const sql = format('INSERT INTO %I (%I) VALUES (%L);', this.table_name, this.table_cols, values);
+      const query = await db.query(sql);
+
+      if(this.logging_enabled) query.then((res) => console.log(res)).catch((err) => console.log(err));
+    }
+  }
 }
 
 // class Album extends Model {
@@ -103,4 +123,4 @@ class Track extends Model {
 
 module.exports.Playlist = new Playlist('playlists', ['id', 'name', 'tracks']);
 module.exports.Track = new Track('tracks', ['id', 'name', 'artist_id', 'artist_name', 'album_id','album_name']);
-module.exports.Artist = new Artist('artists', ['id', 'name']);
+module.exports.Artist = new Artist('artists', ['id', 'name', 'genres']);

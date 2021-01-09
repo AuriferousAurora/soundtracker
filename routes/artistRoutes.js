@@ -2,29 +2,43 @@ const fetch = require('node-fetch');
 const { Router } = require('express');
 const { ensureAuthenticated } = require('../middleware/authMiddleware');
 const { globals } = require('../globals');
+const { Artist, Track } = require('../models');
 
 const router = Router();
 const baseURL = globals.baseURL;
+const dbUpdate = globals.dbUpdate;
+
 
 router.get('/artists', ensureAuthenticated, async (req, res) => {
-  // Todo: Replace all this code with new code. I copied and pasted it from playlists.
-  // This one is going to hav to be different because there isn't an endpoint for all of the artists associated
-  // with a user profile.
   let access= req.session.accessToken;
-  let artists;
+
+  const ids = await Track.select_single_col('artist_id');
+  const idArray = (Object.values(ids));
+
+  let artists = [];
 
   if (access) {
-      await fetch(baseURL + 'me/playlists', {
+    for(let i = 0; i < Math.ceil(idArray.length / 50); i++) {
+      let ids = idArray.slice(i * 50, (i + 1) * 50).join(',');
+      if (i === 4) {
+      await fetch(baseURL + 'artists/?ids=' + ids, {
           headers: { 'Authorization': 'Bearer ' + access } })
-      .catch((err) => console.log(err))
-      .then((res) => res.json())
-      .then((json) => playlists = json.items);
+        .catch((err) => console.log(err))
+        .then((res) => res.json())
+        .then((json) => json.artists.forEach( a => artists.push({'id': a.id, 'name': a.name, 'genres': a.genres })));
+      }
+    }
 
-      res.render("playlists", { user: req.user, playlists: playlists });
-  } else {
-      res.render("playlists");
+    if (dbUpdate) { 
+      try {
+          Artist.insert(artists);
+      } catch ( error ) {
+        console.log(error);
+      }
+    }
   }
 
+  res.render("artists", { user: req.user, artists: artists });
 });
 
 router.get('/playlist/:id', ensureAuthenticated, async (req, res) => {
