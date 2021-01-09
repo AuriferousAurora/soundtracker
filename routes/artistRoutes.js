@@ -20,13 +20,12 @@ router.get('/artists', ensureAuthenticated, async (req, res) => {
   if (access) {
     for(let i = 0; i < Math.ceil(idArray.length / 50); i++) {
       let ids = idArray.slice(i * 50, (i + 1) * 50).join(',');
-      if (i === 4) {
+
       await fetch(baseURL + 'artists/?ids=' + ids, {
           headers: { 'Authorization': 'Bearer ' + access } })
         .catch((err) => console.log(err))
         .then((res) => res.json())
         .then((json) => json.artists.forEach( a => artists.push({'id': a.id, 'name': a.name, 'genres': a.genres })));
-      }
     }
 
     if (dbUpdate) { 
