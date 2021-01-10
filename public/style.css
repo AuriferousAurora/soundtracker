@@ -24,7 +24,7 @@
   --item-shadow: 0px 0px 3px 1px rgba(0,0,0,0.75);
   --left-shadow: -1px 0px 6px 1px rgba(0,0,0,0.75);
   --right-shadow: 1px 0px 6px 1px rgba(0,0,0,0.75);
-  --inner-shadow: inset 0px 0px 3px 1px rgba(0,0,0,0.75);
+  --inner-shadow: inset 0px 0px 3px 1px rgba(34,36,38,0.75);
 
   --br: 0.25em;
 
@@ -127,7 +127,7 @@ nav > div.nav__tab--inactive:hover {
 
 div.content {
   background-color: var(--back);
-  box-shadow: var(--inner-shadow);
+  /* box-shadow: var(--inner-shadow); */
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   padding: 1em 2em;

@@ -1,9 +1,21 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-  <h1>Genres</h1>
-{% endblock %}
+{% if not user %}
+	<h2>Welcome! Please log in.</h2>
+	<p><a href="/login">login</a></p>
+{% else %}
+	{% for genre in genres -%}
+	<div class="item item--genres">
+		<div class="item__info">
+			<h3 class="item__title">{{ genre.name }}</h3>
+		</div>
+		<div class="item__buttons">
+			<!-- {% set url = "/genre/" ~ genre.id %} -->
+			<a class="item__button" href='/'>View</a>
+		</div>
+	</div>
+	{%- endfor %}
 
-{% block scripts %}
-
+{% endif %}
 {% endblock %}

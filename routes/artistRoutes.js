@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const { Router } = require('express');
 const { ensureAuthenticated } = require('../middleware/authMiddleware');
 const { globals } = require('../globals');
-const { Artist, Track } = require('../models');
+const { Artist, Track, Genre } = require('../models');
 
 const router = Router();
 const baseURL = globals.baseURL;
@@ -30,7 +30,13 @@ router.get('/artists', ensureAuthenticated, async (req, res) => {
 
     if (dbUpdate) { 
       try {
-          Artist.insert(artists);
+          // ! This code needs to be turned into model or middleware code.
+          // let genreNames = [];
+          // artists.forEach(a => genreNames.push(a['genres']));
+          // let dedupedGenres = Array.from(new Set(genreNames.reduce((a, c) => a.concat(c))));
+          // Genre.insert(dedupedGenres);
+          // * This can probably stay.
+          // Artist.insert(artists);
       } catch ( error ) {
         console.log(error);
       }

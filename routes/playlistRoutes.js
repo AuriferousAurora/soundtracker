@@ -9,8 +9,6 @@ const router = Router();
 const baseURL = globals.baseURL;
 const dbUpdate = globals.dbUpdate;
 
-const db = require('../db');
-
 router.get('/playlists', ensureAuthenticated, async (req, res) => {
   let access= req.session.accessToken;
   let playlists;
