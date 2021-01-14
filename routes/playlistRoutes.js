@@ -4,58 +4,27 @@ const { Router } = require('express');
 const { ensureAuthenticated } = require('../middleware/authMiddleware');
 const { globals } = require('../globals');
 const { Playlist } = require('../models');
+const { fetchPlaylistTracks } = require('../middleware/fetchMiddlware');
 
 const router = Router();
 const baseURL = globals.baseURL;
 const dbUpdate = globals.dbUpdate;
 
 router.get('/playlists', ensureAuthenticated, async (req, res) => {
-  let access= req.session.accessToken;
-  let playlists;
-
+  let access = req.session.accessToken;
   if (access) {
+    let playlists;
+
     await fetch(baseURL + 'me/playlists', {
         headers: { 'Authorization': 'Bearer ' + access } })
       .catch((err) => console.log(err))
       .then((res) => res.json())
       .then((json) => playlists = json.items);
-      
-     async function getPlaylistTracks() {
-      let playlistObjects = [];
-      // For await ... of creates a loop iterating over async iterable objects
-      for await (let p of playlists) {
-        // Instantiate playlist object
-        let playlist = { 'id': null, 'name': null, 'trackIDs': null };
-
-        // Returns tracks associated with playlist
-        const tracks = await fetch(p.tracks.href, {
-          headers: { 'Authorization': 'Bearer ' + access } })
-        .catch((err) => console.log(err))
-        .then((res) => res.json());
-        
-        // Get IDs from tracks
-        let ids = [];
-        tracks.items.forEach((track) => {
-          let t = track.track;
-          if (t) ids.push(t.id);
-        });
-        
-        // Update playlist object
-        playlist.id = p.id;
-        playlist.name = p.name;
-        playlist.trackIDs = ids;
-
-        // Add playlist to playlistObjects array
-        playlistObjects.push(playlist);
-      }
-
-      return playlistObjects;
-    };
 
     if (dbUpdate) { 
       try {
-        const playlists = await getPlaylistTracks();
-        Playlist.insert(playlists);
+        const p = await fetchPlaylistTracks(playlists);
+        Playlist.insert(p);
       } catch ( error ) {
         console.log(error);
       }
@@ -65,7 +34,6 @@ router.get('/playlists', ensureAuthenticated, async (req, res) => {
   } else {
     res.render("playlists");
   }
-
 });
 
 router.get('/playlist/:id', ensureAuthenticated, async (req, res) => {
