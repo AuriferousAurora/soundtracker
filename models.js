@@ -70,9 +70,11 @@ class Playlist extends Model {
     // ? Should I update this to return the query instead of returning null?
     for await (let d of data) {
       if (d.trackIDs.includes(null)) continue;
+
       // Todo: Determine if I can get values dynamically instead of via object properties.
-      // ? Why do calls to class method fail inside await loop.
+      // ? Why do calls to class method fail inside await loop ( Model.formatArray() )
       // * Attempted to format d.trackIDs with this.formatArray() and it returned null.
+      
       const values = [d['id'], d['name'], "{" + d.trackIDs + "}"];
       const sql = format('INSERT INTO %I (%I) VALUES (%L);', this.table_name, this.table_cols, values);
       const query = await db.query(sql);
@@ -130,7 +132,7 @@ class Track extends Model {
   }
 }
 
-module.exports.Playlist = new Playlist('playlists', ['id', 'name', 'tracks']);
+module.exports.Playlist = new Playlist('playlists', ['id', 'name', 'track_ids']);
 module.exports.Track = new Track('tracks', ['id', 'name', 'artist_id', 'artist_name', 'album_id','album_name']);
 module.exports.Artist = new Artist('artists', ['id', 'name', 'genre_ids', 'genre_names']);
 module.exports.Genre = new Genre('genres', ['id', 'name']);
