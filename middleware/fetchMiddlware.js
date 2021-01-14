@@ -1,4 +1,6 @@
-async function fetchPlaylistTracks(playlists) {
+const fetch = require('node-fetch');
+
+async function fetchPlaylistTracks(access, playlists) {
     let playlistArray = [];
     // For await ... of creates a loop iterating over async iterable objects
     for await (let p of playlists) {

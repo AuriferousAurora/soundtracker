@@ -12,7 +12,7 @@ class Abstract {
 
 class Model extends Abstract {
 
-  constructor(table_name, table_cols, logging_enabled = false) {
+  constructor(table_name, table_cols, logging_enabled = true) {
     super();
     this.table_name = table_name;
     this.table_cols = table_cols;
