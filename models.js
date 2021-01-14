@@ -42,9 +42,8 @@ class Model extends Abstract {
     return query;
   }
 
-  async select(data) {
-    // May want to rewrite this to include the abilit to select on columns other than id.
-    const sql = format('SELECT * FROM %I WHERE id IN (%L);', this.table_name, data);
+  async select(data, column_name = 'id') {
+    const sql = format('SELECT * FROM %I WHERE %I IN (%L);', this.table_name, column_name, data);
     const query = await db.query(sql);
 
     return query;
@@ -67,7 +66,6 @@ class Playlist extends Model {
   }
 
   async insert(data) {
-    // ? Should I update this to return the query instead of returning null?
     for await (let d of data) {
       if (d.trackIDs.includes(null)) continue;
 
