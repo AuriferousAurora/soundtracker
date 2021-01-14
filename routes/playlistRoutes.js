@@ -4,12 +4,10 @@ const { Router } = require('express');
 const { ensureAuthenticated } = require('../middleware/authMiddleware');
 const { fetchPlaylistTracks } = require('../middleware/fetchMiddlware');
 
-const { globals } = require('../globals');
-const { Playlist } = require('../models');
+const { baseURL, dbUpdate } = require('../globals');
+const { Playlist, Track } = require('../models');
 
 const router = Router();
-const baseURL = globals.baseURL;
-const dbUpdate = globals.dbUpdate;
 
 router.get('/playlists', ensureAuthenticated, async (req, res) => {
   let playlists;
@@ -23,6 +21,8 @@ router.get('/playlists', ensureAuthenticated, async (req, res) => {
       .then((res) => res.json())
       .then((json) => playlists = json.items);
 
+      // ! I stripped this code out into middleware just to see if I like it.
+      // Todo: If I do, then I want to organize a structure for all of my fetch code.
       const data = await fetchPlaylistTracks(access, playlists);
       Playlist.insert(data);
     
@@ -63,17 +63,20 @@ router.get('/playlist/:id', ensureAuthenticated, async (req, res) => {
             'artist_name': t.artists[0].name
             });
         });
-      // Todo: Include code to insert tracks into database.
+        
         res.render('playlist', { user: req.user, name: playlist.name, tracks: tracks });
+      } else {
+        res.redirect('/playlists');
       }
-    } else { 
-      res.redirect('/playlists');
     }
   } else {
-    // Todo: Include code here to grab code from database.
-  }    
+    const playlistQuery = await Playlist.select(req.params.id);
+    playlist = playlistQuery.rows[0];
+    const trackQuery = await Track.select(playlist.track_ids);
+    let tracks = trackQuery.rows;
 
-
+    res.render('playlist', { user: req.user, name: playlist.name, tracks: tracks });
+  }   
 });
 
 module.exports = router;

@@ -72,7 +72,13 @@ I'm up super late because I was trying to figure out why the JavaScipt I wrote i
 
 I figured out the problem I was having last time. I was declaring a variable at the top of my script that was being reinstantiated every time the page changed location, so my code would execute and then only display for a fraction of a second before being rewritten. The solution was to save the variable in sessionStorage.
 
-:: 2021.01.14 ::
+:: 2021.01.13 ::
 
 I think I have some idea as to how I want to organize the routes. Refer to the playlists route to see how I've written that.
 I'll also need to write some code in the model to handle conflicts on database insertion.
+
+:: 2021.01.14 ::
+
+I think long-term I will want to strip out all of my fetch code from the route and organize it as middleware. It doesn't make sense to have code that fetches from the database
+for every route, just the ones that are accessible from the home screen: clicking the playlists tab will get all of the data I need to view tracks, so I'll just update the database then.
+For now, I'm going to leave things as is and figure out what I want to do later.
