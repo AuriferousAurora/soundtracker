@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block css %}
+		<link href="../../style.css" rel="stylesheet" type="text/css">
+{% endblock%}
+
+{% block content %}
+{% if not user %}
+	<h2>Welcome! Please log in.</h2>
+	<p><a href="/login">login</a></p>
+{% else %}
+    <h2 class="content__title">Playlist: {{ name }}</h2>
+    {% for track in tracks -%}
+    <div id={{ track.id }} class="item item--track">
+        <div class="item__info">
+            <h3 class="item__title">{{ track.name }}</h3>
+            <h5 class="item__subtitle">{{ track.artist_name}} | {{ track.album_name }}</h5>
+        </div>
+        <div class="item__buttons">
+            {% set url = "/track/" ~ track.id  %}
+            <a class="item__button" href={{ url }}>View</a>
+        </div>
+    </div>
+    {%- endfor %}
+{% endif %}
+{% endblock %}

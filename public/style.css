@@ -151,6 +151,10 @@ h3.item__title {
   align-items: center;
 }
 
+.item__buttons > a:last-child {
+  margin-left: 1em;
+}
+
 
 /* ... Item Containers ... */
 
@@ -187,8 +191,19 @@ h3.item__title {
   max-height: 3em;
   min-width: 6em;
   min-height: 2em;
+  max-width: 15em;
+  padding: 0 1.5em;
 }
 
+.toolbar {
+  display: flex;
+  font-family: var(--font-main);
+  margin: 1em;
+}
+
+.toolbar--create {
+  justify-content: flex-end;
+}
 
 
 
