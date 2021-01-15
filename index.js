@@ -11,6 +11,7 @@ const { ensureAuthenticated } = require('./middleware/authMiddleware');
 require('dotenv').config();
 
 const artistRoutes = require('./routes/artistRoutes');
+const editRoutes = require('./routes/editRoutes');
 const genreRoutes = require('./routes/genreRoutes');
 const mainRoutes = require('./routes/mainRoutes');
 const playlistRoutes = require('./routes/playlistRoutes');
@@ -75,6 +76,7 @@ app.use(express.static(__dirname + "/public"));
 app.engine("html", consolidate.nunjucks);
 
 app.use(artistRoutes);
+app.use(editRoutes);
 app.use(genreRoutes);
 app.use(mainRoutes);
 app.use(playlistRoutes);

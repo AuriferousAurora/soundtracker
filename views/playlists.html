@@ -5,14 +5,19 @@
 	<h2>Welcome! Please log in.</h2>
 	<p><a href="/login">login</a></p>
 {% else %}
+	<div class='toolbar'>
+		<a class="item__button" href="/">Make New Playlist</a>
+	</div>
 	{% for playlist in playlists -%}
 	<div class="item item--playlist">
 		<div class="item__info">
 			<h3 class="item__title">{{ playlist.name }}</h3>
 		</div>
 		<div class="item__buttons">
-			{% set url = "/playlist/" ~ playlist.id %}
-			<a class="item__button" href={{ url }}>View</a>
+			{% set edit_url = "/playlist/" ~ playlist.id ~ "/edit" %}
+			<a class="item__button" href={{ edit_url }}>Edit</a>
+			{% set view_url = "/playlist/" ~ playlist.id %}
+			<a class="item__button" href={{ view_url }}>View</a>
 		</div>
 	</div>
 	{%- endfor %}
