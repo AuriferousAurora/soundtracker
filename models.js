@@ -19,7 +19,7 @@ class Model extends Abstract {
     this.logging_enabled = logging_enabled;
   }
 
-  formatArray = (array) => { "{" + array + "}" };
+  formatArray = (array) => "{" + array + "}";
 
   async all() {
     const sql = format('SELECT * FROM %I', this.table_name);
@@ -42,8 +42,22 @@ class Model extends Abstract {
     return query;
   }
 
-  async select(data, column_name = 'id', count = '') {
+  async update_array_col(data, column_name, id) {
+    const sql = format('UPDATE %I SET %I = %I || %L WHERE id = %L;', this.table_name, column_name, column_name, data, id);
+    const query = await db.query(sql);
+
+    return query;
+  }
+
+  async select(data, column_name = 'id') {
     const sql = format('SELECT * FROM %I WHERE %I IN (%L);', this.table_name, column_name, data);
+    const query = await db.query(sql);
+
+    return query;
+  }
+
+  async select_array_col(data, column_name = 'id') {
+    const sql = format('SELECT * FROM %I WHERE %I @> %L;', this.table_name, column_name, data);
     const query = await db.query(sql);
 
     return query;
@@ -134,3 +148,5 @@ module.exports.Playlist = new Playlist('playlists', ['id', 'name', 'track_ids'])
 module.exports.Track = new Track('tracks', ['id', 'name', 'artist_id', 'artist_name', 'album_id','album_name']);
 module.exports.Artist = new Artist('artists', ['id', 'name', 'genre_ids', 'genre_names']);
 module.exports.Genre = new Genre('genres', ['id', 'name']);
+
+
