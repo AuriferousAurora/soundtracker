@@ -42,7 +42,7 @@ class Model extends Abstract {
     return query;
   }
 
-  async select(data, column_name = 'id') {
+  async select(data, column_name = 'id', count = '') {
     const sql = format('SELECT * FROM %I WHERE %I IN (%L);', this.table_name, column_name, data);
     const query = await db.query(sql);
 

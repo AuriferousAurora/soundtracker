@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block css %}
+		<link href="../../style.css" rel="stylesheet" type="text/css">
+{% endblock%}
+
+{% block content %}
+{% if not user %}
+	<h2>Welcome! Please log in.</h2>
+	<p><a href="/login">login</a></p>
+{% else %}
+    <div>
+        <label for='playlist_name'>Name:
+            <input name='playlist_name' type='text'>
+        </label>
+        <label for='genre_selection'>
+            <select name='genre_selection' id='genre_selection'>
+                <option value="">--select a genre--</option>
+                {% for genre in genres %}
+                    <option value={{ genre.id }}>{{ genre.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </div>
+    <div id={{ track.id }} class="item item--track">
+    </div>
+{% endif %}
+{% endblock %}
