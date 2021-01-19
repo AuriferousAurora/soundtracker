@@ -12,7 +12,7 @@ class Abstract {
 
 class Model extends Abstract {
 
-  constructor(table_name, table_cols, logging_enabled = true) {
+  constructor(table_name, table_cols, logging_enabled = false) {
     super();
     this.table_name = table_name;
     this.table_cols = table_cols;
@@ -110,6 +110,11 @@ class Artist extends Model {
 
       if(this.logging_enabled) query.then((res) => console.log(res)).catch((err) => console.log(err));
     }
+  }
+
+  async select_by_genre(genre_name) {
+    const sql = format('select a.id, a.name, g.id, g.name from artists a join genres g on g.id = ANY (a.genre_ids) where g.name = %L;', genre_name);
+    await db.query(sql).catch( err => console.log(err)).then( res => console.log(res));
   }
 }
 

@@ -36,7 +36,7 @@ router.get('/artists', ensureAuthenticated, async (req, res) => {
           // let dedupedGenres = Array.from(new Set(genreNames.reduce((a, c) => a.concat(c))));
           // Genre.insert(dedupedGenres);
           // * This can probably stay.
-          // Artist.insert(artists);
+          Artist.insert(artists);
       } catch ( error ) {
         console.log(error);
       }

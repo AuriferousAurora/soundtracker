@@ -23,4 +23,5 @@ router.get('/playlist/new', ensureAuthenticated, async (req, res) => {
     res.render('playlistCreate', { user: req.user, genres: genres });
 });
 
+
 module.exports = router; 

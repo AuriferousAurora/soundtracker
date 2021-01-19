@@ -31,7 +31,8 @@ CREATE TABLE artists (
 CREATE TABLE artists (
 	id VARCHAR(50) PRIMARY KEY,
 	name VARCHAR(200),
-	genre_ids VARCHAR(50)[]
+	genre_ids UUID[],
+	genre_names VARCHAR(200)[]
 );
 
 CREATE TABLE genres (
