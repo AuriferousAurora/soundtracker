@@ -17,10 +17,17 @@ router.get('/playlist/:id/edit', ensureAuthenticated, async (req, res) => {
 
 router.get('/playlist/new', ensureAuthenticated, async (req, res) => {
     const genreQuery = await Genre.all();
-    console.log(genreQuery);
     const genres = genreQuery.rows;
     
     res.render('playlistCreate', { user: req.user, genres: genres });
+});
+
+router.post('/playlist/new', ensureAuthenticated, async (req, res) => {
+    const genreID = req.body.genre_id;
+    const genreName = await Genre.select(genreID);
+    console.log(genreName);
+    
+    res.render('playlistCreate', { user: req.user });
 });
 
 

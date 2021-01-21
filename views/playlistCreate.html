@@ -9,7 +9,7 @@
 	<h2>Welcome! Please log in.</h2>
 	<p><a href="/login">login</a></p>
 {% else %}
-    <div>
+    <form>        
         <label for='playlist_name'>Name:
             <input name='playlist_name' type='text'>
         </label>
@@ -21,8 +21,34 @@
                 {% endfor %}
             </select>
         </label>
-    </div>
+        <button type='submit'>Generate Playlist</button>
+    </form>
     <div id={{ track.id }} class="item item--track">
     </div>
 {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // get values form
+        const name = form.playlist_name.value;
+        const genre_id = form.genre_selection.value;
+        console.log(name);
+        console.log(genre_id);
+
+        try {
+            fetch('/playlist/new', {
+                method: 'POST',
+                body: JSON.stringify({ name: name, genre_id: genre_id }),
+                headers: {'Content-Type': 'application/json'}
+            });
+        } catch(err) {
+            console.log(err);
+        }
+    }); 
+</script>
 {% endblock %}

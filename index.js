@@ -2,6 +2,7 @@ const express = require('express');
 const session = require("express-session");
 const passport = require('passport');
 const consolidate = require('consolidate');
+const bodyParser = require('body-parser');
 
 const SpotifyStrategy = require('passport-spotify').Strategy;
 
@@ -65,6 +66,8 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "html");
 
 app.use( session({ secret: "keyboard cat", resave: true, saveUninitialized: true }) );
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
