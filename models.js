@@ -112,9 +112,11 @@ class Artist extends Model {
     }
   }
 
-  async select_by_genre(genre_name) {
-    const sql = format('select a.id, a.name, g.id, g.name from artists a join genres g on g.id = ANY (a.genre_ids) where g.name = %L;', genre_name);
-    await db.query(sql).catch( err => console.log(err)).then( res => console.log(res));
+  async select_by_genre(genre_id) {
+    const sql = format('select id from %I WHERE %L = ANY(genre_ids);', this.table_name, genre_id);
+    const query = await db.query(sql).catch( err => console.log(err)).then( res => res);
+
+    return query;
   }
 }
 
@@ -146,6 +148,14 @@ class Track extends Model {
 
       if(this.logging_enabled) query.then((res) => console.log(res)).catch((err) => console.log(err));
     }
+  }
+
+  async select_by_artists(artist_ids) {
+    console.log(artist_ids);
+    const sql = format('select id from %I WHERE artist_id = ANY(ARRAY[%L]);', this.table_name, artist_ids);
+    const query = await db.query(sql).catch( err => console.log(err)).then( res => res);
+
+    return query;
   }
 }
 

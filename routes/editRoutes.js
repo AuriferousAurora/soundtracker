@@ -4,7 +4,8 @@ const { ensureAuthenticated } = require('../middleware/authMiddleware');
 const router = Router();
 
 const { baseURL, dbUpdate } = require('../globals');
-const { Playlist, Track, Genre } = require('../models');
+const { Artist, Genre, Playlist, Track } = require('../models');
+const e = require('express');
 
 router.get('/playlist/:id/edit', ensureAuthenticated, async (req, res) => {
     const playlistQuery = await Playlist.select(req.params.id);
@@ -23,11 +24,20 @@ router.get('/playlist/new', ensureAuthenticated, async (req, res) => {
 });
 
 router.post('/playlist/new', ensureAuthenticated, async (req, res) => {
-    const genreID = req.body.genre_id;
-    const genreName = await Genre.select(genreID);
-    console.log(genreName);
-    
-    res.render('playlistCreate', { user: req.user });
+    if (!req.body.completed) {
+        const genreID = req.body.genre_id;
+
+        const artistQuery = await Artist.select_by_genre(genreID);
+        const artistIDs = artistQuery.rows.map(i => i.id);
+        const trackQuery = await Track.select_by_artists(artistIDs);
+        const trackIDs = trackQuery.rows.map(i => i.id);
+
+        // Todo: Figure out what I need to do with this next
+        let tracks = trackIDs;
+        res.status(200).json({ tracks });
+    } else {
+       console.log('Oops');
+    }
 });
 
 

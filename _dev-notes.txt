@@ -82,3 +82,8 @@ I'll also need to write some code in the model to handle conflicts on database i
 I think long-term I will want to strip out all of my fetch code from the route and organize it as middleware. It doesn't make sense to have code that fetches from the database
 for every route, just the ones that are accessible from the home screen: clicking the playlists tab will get all of the data I need to view tracks, so I'll just update the database then.
 For now, I'm going to leave things as is and figure out what I want to do later.
+
+:: 2021.07.28 ::
+
+Today I learned that you can set the server and client encoding for a PostgreSQL database via the command 'SET server_encoding to 'utf8'' or 'SET client_encoding to 'WIN1252''. I don't know what will happen if you try to change the server encoding (my thought was it would potentially fuck up the data) but changing the client encoding solved a problem I was
+having in my terminal where querying certain tables was throwing an error that 'character with byte sequence 0xe5 0xbd 0xb1 in UTF8 encoding has no equivalent in WIN1252', so I just changed the client encoding. Not sure if it carries over between sessions.
