@@ -34,6 +34,10 @@ router.post('/playlist/new', ensureAuthenticated, async (req, res) => {
 
         // Todo: Figure out what I need to do with this next
         let tracks = trackIDs;
+        // return tracks IDs and names and artists to display in view
+        // return playlistEdit view?
+        // need to make sure that I have to save the playlist and send it
+
         res.status(200).json({ tracks });
     } else {
        console.log('Oops');

@@ -1,4 +1,4 @@
-;CREATE TABLE playlists (
+CREATE TABLE playlists (
 	id VARCHAR(50) PRIMARY KEY,
 	name VARCHAR(200),
 	tracks VARCHAR(200)[]
