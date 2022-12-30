@@ -10,7 +10,6 @@ I should probably read through these guides at some point: https://developer.spo
 
 This is the end of my first session of coding. 
 
-
 I still don't fully understand the login process and I only partially understand the templating engine (nunjucks), but it's similar enough to the only other one I'm familiar with (whatever engine Django for Python uses). 
 
 I may decide to redesing the frontend with React or something else, but for now Node.JS for the backend and basic HTML/CSS/JS and Nunjucks should serve well.
